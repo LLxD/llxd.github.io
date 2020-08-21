@@ -1,0 +1,27 @@
+#Executa as operações
+000	LOAD(0F0); DIV(0F3)
+001	SUB(0F4); STOR(0F5)
+002	LOAD MQ; STOR(0F0)
+
+#Decide se acumula ou não
+003	LOAD(0F5); JUMP(004, 0:19)
+004	JUMP+ M(005,0:19); JUMP M(007, 0:19)
+
+#Acumula os resultados
+005	LOAD(0F2); ADD(0F1)
+006	STOR(0F2); JUMP(007, 0:19)
+
+#Executa a operação com b
+007	LOAD MQ, M(0F1); MUL M(0F3)
+008	LOAD MQ; STOR(0F1)
+
+#Verificar se a primeira variavel ja é igual a 1
+009	LOAD(0F0); SUB(0F4)
+00A	JUMP+ M(000,0:19); JUMP(00A, 20:39)
+
+0F0 	00 00 00 00 03		#Constante valor a
+0F1	00 00 00 00 02		#Constante valor b
+0F2	00 00 00 00 00		#Resultado
+0F3	00 00 00 00 02		#Constante 2
+0F4	00 00 00 00 01		#Constante 1
+0F5 	00 00 00 00 00		#Controle caso for impar

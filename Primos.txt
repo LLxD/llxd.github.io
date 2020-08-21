@@ -1,0 +1,38 @@
+#Verifica se o numero é divisivel pelos primos armazenaos no vetor
+000	LOAD(0F1); DIV M(100)
+001	SUB(0F2); JUMP+ M(003,0:19) 'JUMP ativa quando o numero não é divisivel
+002	JUMP(00B, 0:19); JUMP(002, 0:19)
+
+#Verifica se o navegador está na ultima posição do vetor
+003	LOAD(0F6); SUB(0F4)
+004	JUMP+ M(008, 0:19) 'JUMP ATIVA QUANDO O VALOR DO NAVEGADOR É IGUAL AO VALOR FINAL DO VETOR; JUMP M (005,0:19) 'JUMP ATIVA QUANDO O VALOR DO NAVEGADOR NÃO É IGUAL AO VALOR FINAL DO VETOR
+
+#Alterna o valor do navegador
+005	LOAD(0F6); ADD(0F2)
+006	STOR M(0F6); STOR+ M(000, 28:39)
+007	JUMP(000, 0:19); JUMP(007, 0:19)
+
+#Armazena o numero no vetor e aumenta 1 no apontador do final
+008	LOAD(0F4); ADD(0F2)
+009	STOR(0F4); STOR+ M(00A,28:39)
+00A	LOAD(0F1); STOR(000)
+
+#Atualiza a constante de inicio e repete o primeiro loop
+00B	LOAD(0F1); SUB(0F0)
+00C	JUMP+ M(012, 20:39); JUMP(00D, 0:19)
+00D	LOAD(0F1); ADD(0F2)
+00E	STOR(0F1); LOAD(0F0)
+00F	LOAD(0F5); STOR(0F6)
+010	LOAD(0F5); STOR+ M(000, 28:39)
+011	SUB(0F1); JUMP+ M(000, 0:19)
+012	JUMP(012, 20:39); JUMP(012, 20:39)
+
+0F0 	00 00 00 00 19 		#Contador de Interações n(25)
+0F1	00 00 00 00 03		#Constante 3 inicio do primeiro loop
+0F2 	00 00 00 00 01		#Constante 1 para os loop
+0F3  	00 00 00 00 00		#Constante 0 inicio do primeiro loop
+0F4 	00 00 00 01 00		#Apontador do Final do Vetor
+0F5 	00 00 00 01 00		#Apontador de Inicio do Vetor
+0F6	00 00 00 01 00		#Navegador pelos itens do vetor
+
+100	00 00 00 00 02		#Primeiro elemento do Vetor
