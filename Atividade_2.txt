@@ -1,0 +1,128 @@
+1)
+--------------------------------------------------------------IAS MACHINE------------------------------------------------
+000    0110006101
+001    0F0080D002
+
+002    010F5050F2
+003    210F50D004
+
+004    1300012008
+005 130090D006
+
+006    010F5060F3
+007    0F00C0D000
+
+008    01101210F1
+009    0110021101
+00A    010F121100
+00B    0D0000D000
+
+00C    010F6060F4
+00D    0F0140D00E
+
+00E    010F6050F2
+00F    210F612009
+010    1300A12000
+
+011    050F2210F5
+012    1200813009
+013    130000D000
+
+014    0E0140E014
+
+0F0     00 00 00 00 0A 
+0F1    00 00 00 00 03
+0F2     00 00 00 00 01
+0F3     00 00 00 01 0A
+0F4     00 00 00 01 08
+0F5    00 00 00 01 01
+0F6     00 00 00 01 00
+
+100    00 00 00 00 03
+101    00 00 00 00 07
+102    00 00 00 00 05
+103    00 00 00 00 08
+104    00 00 00 00 01
+105    00 00 00 00 00
+106    00 00 00 00 06
+107    00 00 00 00 09
+108    00 00 00 00 04
+109    00 00 00 00 02
+
+-----------------------------------------------LINGUAGEM DE ALTO PADRÃO--------------------------------------------
+#Testa se o há algum valor menor
+000    LOAD(100); SUB(101)
+001    JUMP+ M(008, 0:19); JUMP M(002, 0:19)
+
+#Salta 1 no vetor
+002    LOAD(0F5); ADD(0F2)
+003    STOR(0F5); JUMP M(004, 0:19)
+
+#Atualiza os endereços para o proximo laço
+004    STOR M(000, 28:39); STOR M(008, 8:19)
+005    STOR M(009, 28:39); JUMP M(006, 0:19)
+
+#Verifica se o navegador está na ultima posição do vetor
+006    LOAD(0F5); SUB(0F3)
+007    JUMP+ M(00B, 0:19); JUMP M (000,0:19)
+
+#Reorganiza o vetor
+008    LOAD(101); STOR(0F1)
+009    LOAD(100); STOR(101)
+00A    LOAD(0F1); STOR(100)
+00B    JUMP M(00B,28:39); JUMP M(000,0:19)
+
+#Verifica o comparador já esta no final do vetor
+00C    LOAD(0F6); SUB(0F3)
+00D    JUMP+ M(014,0:19); JUMP M(00D,0:19)
+
+00E    LOAD(0F6);ADD(0F2)
+00F    STOR(0F6); STOR M(009, 8:19)
+010    STOR M(00A, 28:39); STOR M(000, 8:19)
+
+011    ADD(0F2); STOR(0F5)
+012    STOR M(008, 8:19); STOR M(009, 28:39)
+013    STOR M(000, 28:39); JUMP M(000,0:19) 
+
+014    JUMP M(014,20:39); JUMP M(014,20:39)
+
+0F0     00 00 00 00 0A        #Tamanho do Vetor
+0F1    00 00 00 00 03         #Variavel Axiliar
+0F2     00 00 00 00 01        #Constante 1 para os loop
+0F3     00 00 00 01 0A        #Apontador do Final do Vetor
+0F4     00 00 00 01 08        #Apontador de Inicio do Vetor
+0F5    00 00 00 01 01         #Navegador pelos itens do vetor
+0F6     00 00 00 01 00        #Comparador
+
+2-
+Ao fazer as operações, o valor inverte o sinal inicial.
+
+3-
+A     |   Q    |   Q-1  |  M  |
+0000  | 0110 |      0    |1001|
+0000  | 0011 |      0    |1001|
+0111  | 0011 |      0    |1001|
+0011  | 1001 |      1    |1001|
+0001  | 1100 |      1    |1001|
+1010  | 1100 |      1    |1001|
+1101  | 0110 |      0    |1001|
+
+Resultado = 11010110 (-42)
+
+4-
+a) Sinal - 1 Bit / Expoente - 5 bits / Mantissa - 10 bits
+
+b) 0 11110 1111111111 para o maior valor positivo (2^15)(1+1024/1023)
+1 11110 1111111111 para o maior valor negativo -(2^15)(1+1024/1023)
+
+c) O menor número denormalizado negativo representável é: 1 00000 0000000001 = 2^(-14)*(0+1023/1024)
+
+d) + Inf = 0 11111 0000000000 (bin)
+     - Inf = 1 11111 0000000000 (bin)
+
+e) 27,325 = 0 10011 1011010100 (bin) = 0 13 2D4 (hex)
+- 35,487 = 1 10100 0001101111 (bin) = 1 14 6F (hex)
+
+5-
+0 01111 0100010100= +1,276
+r = -0.00472
